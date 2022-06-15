@@ -1,0 +1,36 @@
+2. Docker
+You must create a docker-compose.yml file that brings up our example application stack from
+scratch. The application stack is composed of 2 softwares: An apache that serves our web
+application and a postgresql database to host information about our application.
+The requirements are:
+● Use Ubuntu or Centos official docker images as a base (do not use any other public
+base containers or stripped ubuntu or centos).
+● Use the same base image for both containers (do not use ubuntu for one and centos for
+the other).
+● Both of these must be defined and must be controlled from docker-compose as a whole
+single stack.
+● You must use dockerfiles to build the containers inside the docker-compose.yml, it must
+work by executing "$ docker-compose up -d" only on a clean machine.
+● The containers must apply all security and version patches on the system when building.
+● Our application is a file outside the apache container for maintainability, it should only be
+mapped inside the apache container and not included in the container image.
+● Our application is a php file which I include here. It only does a connection test against
+the database. It should show "connected".
+Note: you may need to change the pg_connect string pointing it to the right hostname.
+<?php
+$connection = pg_connect ("host=localhost dbname=iriusprod
+user=iriusprod password=iriusprod");
+if($connection) {
+echo 'connected';
+} else {
+echo 'there has been an error connecting';
+}
+?>
+● The apache container should wait until the database container is ready to start.
+● Only the minimum ports should be exposed outside the containers
+● You should use docker networks and assign fixed ip's to the containers
+● Database should not be network reachable by anyone than the apache container
+● You should try to make the container images as small as possible.
+● You should use fixed names on the containers to easily identify them
+● Do whatever you need to do in order to achieve all of this in the most efficient way.
+● There is no need to use HTTPS for this lab, you can skip it
